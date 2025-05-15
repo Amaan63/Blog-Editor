@@ -8,6 +8,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +21,7 @@ public class AppConfig {
                         .requestMatchers("/user/**").permitAll()// Allow POST /public to be publicly accessible for creating user
                         .requestMatchers("/blogs/**").authenticated()// Block all the /private and require authentication
                         .anyRequest().permitAll())
-                //.addFilterBefore(new JwtValidator(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JwtValidator(), BasicAuthenticationFilter.class)
                 .csrf(csf -> csf.disable());
                 //.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         return http.build();
