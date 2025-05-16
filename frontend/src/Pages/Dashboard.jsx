@@ -70,7 +70,7 @@ const Dashboard = ({ setCurrentPage, setSelectedBlog }) => {
           setSelectedBlog(null);
           navigate("/editor");
         }}
-        onLogout={() => setCurrentPage("login")}
+        onLogout={() => navigate("/editor")}
       />
 
       <main className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
