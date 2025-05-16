@@ -12,7 +12,7 @@ const App = () => {
   const [selectedBlog, setSelectedBlog] = useState(null);
 
   return (
-    <div className="font-sans antialiased text-gray-900">
+    <div className="font-sans antialiased text-gray-900 bg-[#F9FAFB]">
       <ToastContainer
         position="top-right"
         autoClose={3000}
