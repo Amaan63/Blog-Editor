@@ -1,5 +1,6 @@
 package com.blogeditor.service.User;
 
+import com.blogeditor.config.JwtProvider;
 import com.blogeditor.dto.UserDto;
 import com.blogeditor.models.User;
 import com.blogeditor.repository.UserRepository;
@@ -66,6 +67,22 @@ public class UserServiceImplementation implements UserService{
 
     @Override
     public User findUserByJwt(String jwt) throws Exception {
-        return null;
+        try {
+            String email = JwtProvider.getEmailFromJwtToken(jwt);
+
+            if (email == null || email.isEmpty()) {
+                throw new Exception("Invalid JWT token. Email not found.");
+            }
+
+            User user = userRepository.findByEmail(email);
+            if (user == null) {
+                throw new Exception("User not found for email: " + email);
+            }
+
+            return user;
+        } catch (Exception e) {
+            // Optional: log the error for debugging
+            throw new Exception("Error while extracting user from JWT: " + e.getMessage());
+        }
     }
 }
