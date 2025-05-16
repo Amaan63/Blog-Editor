@@ -1,5 +1,6 @@
 package com.blogeditor.service.User;
 
+import com.blogeditor.dto.UserDto;
 import com.blogeditor.models.User;
 import com.blogeditor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,13 @@ public class UserServiceImplementation implements UserService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Override
-    public User registerUser(User user) {
-        return null;
+    public User registerUser(UserDto userDto) {
+        User newUser = new User();
+        newUser.setEmail(userDto.getEmail());
+        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        newUser.setUsername(userDto.getUsername());
+        return userRepository.save(newUser);
     }
 
     @Override
@@ -43,27 +47,21 @@ public class UserServiceImplementation implements UserService{
         if (email == null || email.trim().isEmpty()) {
             throw new Exception("Email is required, Cannot Be Null");
         }
-        try {
-            // Load user details from the database based on the provided email
-            UserDetails userDetails = userEmailVerificationService.loadUserByUsername(email);
 
-            // If the provided password does not match the stored encoded password, throw an
-            // exception
-            if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-                throw new Exception("Password didn't match");
-            }
+        // Load user details from the database based on the provided email
+        UserDetails userDetails = userEmailVerificationService.loadUserByUsername(email);
 
-            // If both email and password are correct, create and return an Authentication
-            // object
-            // This Authentication object contains the user details and their authorities
-            // (roles/permissions)
-            return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        } catch (Exception ex) {
-            // If user not found by email
-            // If no user is found with the given email, throw an exception indicating
-            // invalid username
+        if (userDetails == null) {
             throw new Exception("The email " + email + " is not registered");
         }
+
+        // Check if password matches
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+            throw new Exception("Password didn't match");
+        }
+
+        // If both email and password are correct, return Authentication object
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     @Override
