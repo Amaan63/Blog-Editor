@@ -11,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -56,6 +53,18 @@ public class UserController {
         } catch (BadCredentialsException e) {
             // If email not found or password mismatch
             return new ResponseEntity<>(new AuthResponse(null, e.getMessage()), HttpStatus.UNAUTHORIZED);
+
+        }
+    }
+
+    @GetMapping("/token-to-user")
+    public ResponseEntity<?> tokenToUser(@RequestHeader("Authorization") String jwt) throws Exception {
+        try {
+            User user = userServiceImplementation.findUserByJwt(jwt);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (BadCredentialsException e) {
+            // If email not found or password mismatch
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
 
         }
     }
