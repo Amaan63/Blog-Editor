@@ -50,7 +50,7 @@ public class UserController {
 
             AuthResponse res = new AuthResponse(token, "Login Success");
             return new ResponseEntity<>(res, HttpStatus.OK);
-        } catch (BadCredentialsException e) {
+        } catch (Exception e) {
             // If email not found or password mismatch
             return new ResponseEntity<>(new AuthResponse(null, e.getMessage()), HttpStatus.UNAUTHORIZED);
 
