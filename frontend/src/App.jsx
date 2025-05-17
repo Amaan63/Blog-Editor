@@ -7,10 +7,6 @@ import Dashboard from "./Pages/Dashboard";
 import BlogEditor from "./Pages/BlogEditor";
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentPage, setCurrentPage] = useState("dashboard");
-  const [selectedBlog, setSelectedBlog] = useState(null);
-
   return (
     <div className="font-sans antialiased text-gray-900 bg-[#F9FAFB]">
       <ToastContainer
@@ -19,39 +15,10 @@ const App = () => {
         hideProgressBar={false}
         closeOnClick
       />
-
       <Routes>
-        {!isAuthenticated ? (
-          <>
-            <Route
-              path="/*"
-              element={<Auth setIsAuthenticated={setIsAuthenticated} />}
-            />
-            <Route path="*" element={<Navigate to="/" />} />
-          </>
-        ) : (
-          <>
-            <Route
-              path="/dashboard"
-              element={
-                <Dashboard
-                  setCurrentPage={setCurrentPage}
-                  setSelectedBlog={setSelectedBlog}
-                />
-              }
-            />
-            <Route
-              path="/editor"
-              element={
-                <BlogEditor
-                  selectedBlog={selectedBlog}
-                  setCurrentPage={setCurrentPage}
-                />
-              }
-            />
-            <Route path="*" element={<Navigate to="/dashboard" />} />
-          </>
-        )}
+        <Route path="/*" element={<Auth />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/editor" element={<BlogEditor />} />
       </Routes>
     </div>
   );
