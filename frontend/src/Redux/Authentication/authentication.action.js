@@ -1,4 +1,5 @@
-import { api } from "../../config/api";
+import axios from "axios";
+import { API_BASE_URL } from "../../config/api";
 import {
   LOGIN_FAILURE,
   LOGIN_REQUEST,
@@ -12,8 +13,8 @@ export const loginUserAction = (loginData) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST }); // 🚀 Dispatch action to show loading state (e.g., spinner)
 
   try {
-    const { data } = await api.post(
-      `${API_BASE_URL}/public/auth/signin`, // 🔗 API endpoint for login
+    const { data } = await axios.post(
+      `${API_BASE_URL}/user/signin`, // 🔗 API endpoint for login
       loginData.data // 📦 Send login credentials (email & password)
     );
 
@@ -25,8 +26,8 @@ export const loginUserAction = (loginData) => async (dispatch) => {
 
     dispatch({ type: LOGIN_SUCCESS, payload: data.token }); // ✅ Dispatch success action with token
   } catch (error) {
-    console.log("Error -----------", error); // 🐞 Log any error for debugging
-    dispatch({ type: LOGIN_FAILURE, payload: error }); // ❌ Dispatch failure action with error
+    const errorMessage = error?.response?.data?.message || "Login failed!"; // 🐞 Log any error for debugging
+    dispatch({ type: LOGIN_FAILURE, payload: { message: errorMessage } }); // ❌ Dispatch failure action with error
   }
 };
 
@@ -34,8 +35,8 @@ export const registerUserAction = (loginData) => async (dispatch) => {
   dispatch({ type: REGISTER_REQUEST });
 
   try {
-    const { data } = await api.post(
-      `${API_BASE_URL}/public/auth/signup`,
+    const { data } = await axios.post(
+      `${API_BASE_URL}/user/signup`,
       loginData.data
     );
 
@@ -47,7 +48,8 @@ export const registerUserAction = (loginData) => async (dispatch) => {
 
     dispatch({ type: REGISTER_SUCCESS, payload: data.token });
   } catch (error) {
-    console.log("Error -----------", error);
-    dispatch({ type: REGISTER_FAILURE, payload: error });
+    const errorMessage =
+      error?.response?.data?.message || "Registration failed!"; // 🐞 Log any error for debugging
+    dispatch({ type: REGISTER_FAILURE, payload: { message: errorMessage } }); // ❌ Dispatch failure action with error
   }
 };
