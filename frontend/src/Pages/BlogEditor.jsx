@@ -5,10 +5,10 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 // Custom components
-import BlogHeader from "../components/BlogHeader";
-import TabNavigation from "../components/TabNavigation";
-import PreviewContent from "../components/PreviewContent";
-import BlogForm from "../components/BlogForm";
+import BlogHeader from "../components/BlogEditor/BlogHeader";
+import TabNavigation from "../components/BlogEditor/TabNavigation";
+import PreviewContent from "../components/BlogEditor/PreviewContent";
+import BlogForm from "../components/BlogEditor/BlogForm";
 
 const BlogEditor = ({ blogs, setBlogs, setCurrentPage }) => {
   const { blogId } = useParams();

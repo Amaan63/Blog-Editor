@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import HeaderBar from "../components/BlogEditor/HeaderBar";
-import SearchBar from "../components/BlogEditor/SearchBar";
-import BlogCard from "../components/BlogEditor/BlogCard";
+import HeaderBar from "../components/Dashboard/HeaderBar";
+import SearchBar from "../components/Dashboard/SearchBar";
+import BlogCard from "../components/Dashboard/BlogCard";
 
 // Sample data
 const mockBlogs = [
