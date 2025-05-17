@@ -50,9 +50,11 @@ public class UserServiceImplementation implements UserService{
         }
 
         // Load user details from the database based on the provided email
-        UserDetails userDetails = userEmailVerificationService.loadUserByUsername(email);
+        UserDetails userDetails;
 
-        if (userDetails == null) {
+        try {
+            userDetails = userEmailVerificationService.loadUserByUsername(email);
+        } catch (Exception e) {
             throw new Exception("The email " + email + " is not registered");
         }
 
