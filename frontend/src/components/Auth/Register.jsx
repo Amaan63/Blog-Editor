@@ -1,43 +1,82 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { registerUserAction } from "../../Redux/Authentication/authentication.action";
 
-const Register = ({ setIsAuthenticated }) => {
-  const validate = (values) => {
-    const errors = {};
-    if (!values.email) {
-      errors.email = "Required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-      errors.email = "Invalid email address";
-    }
-    if (!values.password) {
-      errors.password = "Required";
-    } else if (values.password.length < 6) {
-      errors.password = "Password must be at least 6 characters";
-    }
-    if (!values.confirmPassword) {
-      errors.confirmPassword = "Required";
-    } else if (values.password !== values.confirmPassword) {
-      errors.confirmPassword = "Passwords must match";
-    }
-    return errors;
+const initialValues = {
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
+const validationSchema = Yup.object({
+  username: Yup.string().required("User Name is Required"),
+  email: Yup.string().email("Invalid Email").required("Email is Required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is Required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Confirm Password is Required"),
+});
+
+const Register = () => {
+  const [submitted, setSubmitted] = useState(false); // ✅ Track form submission
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
+
+  const handleSubmit = (values) => {
+    console.log("Values are", values);
+    dispatch(registerUserAction({ data: values }));
+    setSubmitted(true);
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    setTimeout(() => {
-      setSubmitting(false);
-      setIsAuthenticated(true);
-      toast.success("Registered successfully!");
-    }, 500);
-  };
+  useEffect(() => {
+    if (submitted) {
+      if (auth?.jwt) {
+        toast.success("Registration successful!");
+        navigate("/");
+      } else if (auth?.error?.message) {
+        //console.log(auth?.error?.message);
+        toast.error(auth.error.message); // ✅ exact backend message
+        setSubmitted(false);
+      }
+    }
+  }, [auth.jwt, auth.error, submitted]);
 
   return (
     <Formik
-      initialValues={{ email: "", password: "", confirmPassword: "" }}
-      validate={validate}
+      initialValues={initialValues}
+      validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting }) => (
         <Form className="space-y-6">
+          <div>
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Username
+            </label>
+            <Field
+              type="text"
+              name="username"
+              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              placeholder="User123"
+            />
+            <ErrorMessage
+              name="username"
+              component="div"
+              className="mt-1 text-sm text-red-600"
+            />
+          </div>
+
           <div>
             <label
               htmlFor="email"
@@ -100,10 +139,10 @@ const Register = ({ setIsAuthenticated }) => {
 
           <button
             type="submit"
-            disabled={isSubmitting}
             className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
           >
-            {isSubmitting ? "Processing..." : "Sign Up"}
+            {/* {isSubmitting ? "Processing..." : "Sign Up"} */}
+            Sign Up
           </button>
         </Form>
       )}
