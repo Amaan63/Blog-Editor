@@ -1,7 +1,6 @@
 import { Edit, Trash2 } from "lucide-react";
 
 const BlogCard = ({ blog, onEdit, onDelete }) => {
-  console.log(blog.user.username);
   return (
     <div className="overflow-hidden bg-white rounded-lg shadow">
       <div className="p-5">
