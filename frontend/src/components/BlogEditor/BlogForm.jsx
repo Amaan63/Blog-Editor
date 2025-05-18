@@ -8,6 +8,7 @@ import {
   publishBlogAction,
 } from "../../Redux/Blog/blog.action";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   title: "",
@@ -27,6 +28,7 @@ const BlogForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [lastActionType, setLastActionType] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const blogState = useSelector((state) => state.blog); // adjust this based on your reducer
 
   const handleChange = (e) => {
@@ -60,7 +62,7 @@ const BlogForm = () => {
         } else {
           toast.success("Blog submitted successfully!");
         }
-
+        navigate("/dashboard");
         setFormValue(initialValues);
       } else if (blogState?.error) {
         toast.error("Something went wrong");
