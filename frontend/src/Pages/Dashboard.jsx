@@ -6,12 +6,15 @@ import SearchBar from "../components/Dashboard/SearchBar";
 import BlogCard from "../components/Dashboard/BlogCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBlogAction } from "../Redux/Blog/blog.action";
+import WelcomeBanner from "../components/Dashboard/WelcomeBanner";
+import { logoutUser } from "../Redux/Authentication/authentication.action";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { blogs = [], loading } = useSelector((state) => state.blog);
+  const user = useSelector((state) => state.auth.user);
 
   const [searchId, setSearchId] = useState("");
 
@@ -39,14 +42,21 @@ const Dashboard = () => {
     dispatch(getAllBlogAction());
   }, [dispatch]);
 
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    toast.success("Logout Successfully");
+    navigate("/");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <HeaderBar
         onNewBlog={() => navigate("/editor")}
-        onLogout={() => navigate("/editor")}
+        onLogout={handleLogout}
       />
 
       <main className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <WelcomeBanner user={user} />
         <div className="mb-6">
           <SearchBar
             value={searchId}
