@@ -2,7 +2,7 @@
 import { List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const BlogHeader = ({ selectedBlog }) => {
+const BlogHeader = () => {
   const navigate = useNavigate();
 
   return (
@@ -10,7 +10,7 @@ const BlogHeader = ({ selectedBlog }) => {
       <div className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-gray-900">
-            {selectedBlog ? "Edit Blog" : "Create New Blog"}
+            {false ? "Edit Blog" : "Create New Blog"}
           </h1>
           <button
             onClick={() => navigate("/dashboard")}
