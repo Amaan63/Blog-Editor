@@ -1,0 +1,55 @@
+import {
+  GET_ALL_BLOG_FAILURE,
+  GET_ALL_BLOG_REQUEST,
+  GET_BLOG_BY_ID_FAILURE,
+  GET_BLOG_BY_ID_REQUEST,
+  PUBLISH_BLOG_FAILURE,
+  PUBLISH_BLOG_REQUEST,
+  PUBLISH_BLOG_SUCCESS,
+  SAVE_OR_UPDATE_DRAFT_BLOG_FAILURE,
+  SAVE_OR_UPDATE_DRAFT_BLOG_REQUEST,
+  SAVE_OR_UPDATE_DRAFT_BLOG_SUCCESS,
+} from "./blog.actionType";
+
+const initialState = {
+  loading: false,
+  blog: null,
+  error: null,
+};
+
+const blogReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case SAVE_OR_UPDATE_DRAFT_BLOG_REQUEST:
+    case PUBLISH_BLOG_REQUEST:
+    case GET_ALL_BLOG_REQUEST:
+    case GET_BLOG_BY_ID_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case SAVE_OR_UPDATE_DRAFT_BLOG_SUCCESS:
+    case PUBLISH_BLOG_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        blog: action.payload, // contains either created or updated blog
+      };
+
+    case SAVE_OR_UPDATE_DRAFT_BLOG_FAILURE:
+    case PUBLISH_BLOG_FAILURE:
+    case GET_ALL_BLOG_FAILURE:
+    case GET_BLOG_BY_ID_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export default blogReducer;
