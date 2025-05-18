@@ -5,9 +5,12 @@ import HeaderBar from "../components/Dashboard/HeaderBar";
 import SearchBar from "../components/Dashboard/SearchBar";
 import BlogCard from "../components/Dashboard/BlogCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBlogAction } from "../Redux/Blog/blog.action";
+import { getAllBlogAction, getBlogByIdAction } from "../Redux/Blog/blog.action";
 import WelcomeBanner from "../components/Dashboard/WelcomeBanner";
-import { logoutUser } from "../Redux/Authentication/authentication.action";
+import {
+  getUserFromToken,
+  logoutUser,
+} from "../Redux/Authentication/authentication.action";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -15,31 +18,46 @@ const Dashboard = () => {
 
   const { blogs = [], loading } = useSelector((state) => state.blog);
   const user = useSelector((state) => state.auth.user);
+  const { error } = useSelector((state) => state.blog);
 
   const [searchId, setSearchId] = useState("");
 
   // ✅ Filter blogs dynamically based on search input
-  const filteredBlogs = searchId.trim()
-    ? blogs.filter((blog) => blog.id === searchId)
-    : blogs;
+  const filteredBlogs = blogs;
 
-  const handleSearch = () => {
-    if (searchId.trim() && filteredBlogs.length === 0) {
-      toast.error("No blog found with that ID");
+  const handleSearch = async () => {
+    if (searchId.trim()) {
+      dispatch(getBlogByIdAction(searchId));
     }
   };
 
-  const handleDelete = (id) => {
-    // Ideally you should dispatch a delete action and then re-fetch
-    toast.success("Blog deleted successfully!");
-  };
+  // Show error toast when error changes
+  useEffect(() => {
+    if (error?.message) {
+      toast.error(error.message);
+    }
+  }, [error]);
 
-  const handleEdit = (blog) => {
-    navigate("/editor");
-  };
+  // When search is cleared, fetch all blogs again
+  useEffect(() => {
+    if (searchId.trim() === "") {
+      dispatch(getAllBlogAction());
+    }
+  }, [searchId, dispatch]);
 
+  // const handleDelete = (id) => {
+  //   // Ideally you should dispatch a delete action and then re-fetch
+  //   toast.success("Blog deleted successfully!");
+  // };
+
+  // const handleEdit = (blog) => {
+  //   navigate("/editor");
+  // };
+
+  // to get All the blogs
   useEffect(() => {
     dispatch(getAllBlogAction());
+    dispatch(getUserFromToken());
   }, [dispatch]);
 
   const handleLogout = () => {
@@ -72,8 +90,8 @@ const Dashboard = () => {
               <BlogCard
                 key={blog.id}
                 blog={blog}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
+                // onEdit={handleEdit}
+                // onDelete={handleDelete}
               />
             ))}
           </div>
