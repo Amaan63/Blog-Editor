@@ -27,7 +27,12 @@ export const authenticationReducer = (state = initialState, action) => {
 
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
-      return { ...state, jwt: action.payload, loading: false, error: null };
+      return {
+        ...state,
+        jwt: action.payload,
+        loading: false,
+        error: null,
+      };
     // ✅ Login successful: save token (jwt), stop loading, clear error
 
     case LOGIN_FAILURE:
