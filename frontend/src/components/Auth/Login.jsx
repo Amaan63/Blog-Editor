@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import { loginUserAction } from "../../Redux/Authentication/authentication.action";
+import {
+  getUserFromToken,
+  loginUserAction,
+} from "../../Redux/Authentication/authentication.action";
 
 const initialValues = {
   email: "",
@@ -26,7 +29,6 @@ const Login = () => {
   const auth = useSelector((state) => state.auth);
 
   const handleSubmit = (values) => {
-    console.log("Values are", values);
     setSubmitted(values);
     dispatch(loginUserAction({ data: values }));
     setSubmitted(true);
@@ -36,9 +38,9 @@ const Login = () => {
     if (submitted) {
       if (auth?.jwt) {
         toast.success("Login successful!");
+        dispatch(getUserFromToken());
         navigate("/dashboard");
       } else if (auth?.error?.message) {
-        console.log(auth?.error?.message);
         toast.error(auth.error.message); // ✅ exact backend message
         setSubmitted(false);
       }
