@@ -5,7 +5,6 @@ import TabNavigation from "../components/BlogEditor/TabNavigation";
 import BlogForm from "../components/BlogEditor/BlogForm";
 import PreviewContent from "../components/BlogEditor/PreviewContent";
 
-
 const BlogEditor = () => {
   return (
     <div>
