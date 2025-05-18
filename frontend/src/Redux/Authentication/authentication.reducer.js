@@ -1,7 +1,11 @@
 import {
+  GET_USER_FROM_TOKEN_FAILURE,
+  GET_USER_FROM_TOKEN_REQUEST,
+  GET_USER_FROM_TOKEN_SUCCESS,
   LOGIN_FAILURE,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
+  LOGOUT_USER,
   REGISTER_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
@@ -22,11 +26,13 @@ export const authenticationReducer = (state = initialState, action) => {
 
     case LOGIN_REQUEST:
     case REGISTER_REQUEST:
+    case GET_USER_FROM_TOKEN_REQUEST:
       return { ...state, loading: true, error: null };
     // 🚀 Login started: set loading true, clear previous errors
 
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
+      localStorage.setItem("jwt", action.payload); // store fresh token
       return {
         ...state,
         jwt: action.payload,
@@ -35,8 +41,22 @@ export const authenticationReducer = (state = initialState, action) => {
       };
     // ✅ Login successful: save token (jwt), stop loading, clear error
 
+    case GET_USER_FROM_TOKEN_SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
+        loading: false,
+        error: null,
+      };
+
+    case LOGOUT_USER:
+      return {
+        ...initialState,
+      };
+
     case LOGIN_FAILURE:
     case REGISTER_FAILURE:
+    case GET_USER_FROM_TOKEN_FAILURE:
       return { ...state, loading: false, error: action.payload };
     // ❌ Login failed: stop loading, store error message
 
