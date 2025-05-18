@@ -1,22 +1,29 @@
 import { Edit, Trash2 } from "lucide-react";
 
 const BlogCard = ({ blog, onEdit, onDelete }) => {
+  console.log(blog.user.username);
   return (
     <div className="overflow-hidden bg-white rounded-lg shadow">
       <div className="p-5">
         <div className="flex items-center justify-between mb-2">
           <span
             className={`text-xs font-medium px-2 py-1 rounded-full ${
-              blog.published
+              blog.status?.toLowerCase() === "published"
                 ? "bg-green-100 text-green-800"
-                : "bg-yellow-100 text-yellow-800"
+                : blog.status?.toLowerCase() === "draft"
+                ? "bg-yellow-100 text-yellow-800"
+                : "bg-gray-100 text-gray-800"
             }`}
           >
-            {blog.published ? "Published" : "Draft"}
+            {blog.status || "Unknown"}
           </span>
+
           <span className="text-xs text-gray-500">ID: {blog.id}</span>
         </div>
         <h3 className="mb-2 text-lg font-bold text-gray-900">{blog.title}</h3>
+        <p className="mb-2 text-sm text-gray-500">
+          By: {blog.user?.username || "Unknown Author"}
+        </p>
         <p className="text-gray-600 line-clamp-2">{blog.content}</p>
         <div className="flex items-center justify-between mt-4">
           <span className="text-sm text-gray-500">{blog.createdAt}</span>
