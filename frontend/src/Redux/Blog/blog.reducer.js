@@ -1,6 +1,7 @@
 import {
   GET_ALL_BLOG_FAILURE,
   GET_ALL_BLOG_REQUEST,
+  GET_ALL_BLOG_SUCCESS,
   GET_BLOG_BY_ID_FAILURE,
   GET_BLOG_BY_ID_REQUEST,
   PUBLISH_BLOG_FAILURE,
@@ -13,6 +14,7 @@ import {
 
 const initialState = {
   loading: false,
+  blogs: [],
   blog: null,
   error: null,
 };
@@ -36,6 +38,9 @@ const blogReducer = (state = initialState, action) => {
         loading: false,
         blog: action.payload, // contains either created or updated blog
       };
+
+    case GET_ALL_BLOG_SUCCESS:
+      return { ...state, loading: false, blogs: action.payload };
 
     case SAVE_OR_UPDATE_DRAFT_BLOG_FAILURE:
     case PUBLISH_BLOG_FAILURE:
