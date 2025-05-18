@@ -3,6 +3,9 @@ import {
   GET_ALL_BLOG_FAILURE,
   GET_ALL_BLOG_REQUEST,
   GET_ALL_BLOG_SUCCESS,
+  GET_BLOG_BY_ID_FAILURE,
+  GET_BLOG_BY_ID_REQUEST,
+  GET_BLOG_BY_ID_SUCCESS,
   PUBLISH_BLOG_FAILURE,
   PUBLISH_BLOG_REQUEST,
   PUBLISH_BLOG_SUCCESS,
@@ -47,5 +50,20 @@ export const getAllBlogAction = () => async (dispatch) => {
   } catch (error) {
     console.log("error ", error);
     dispatch({ type: GET_ALL_BLOG_FAILURE, payload: error });
+  }
+};
+
+export const getBlogByIdAction = (id) => async (dispatch) => {
+  dispatch({ type: GET_BLOG_BY_ID_REQUEST });
+  try {
+    const { data } = await api.get(`${API_BASE_URL}/blogs/${id}`);
+    dispatch({ type: GET_BLOG_BY_ID_SUCCESS, payload: data });
+    console.log("GET Post By ID ---  ", data);
+  } catch (error) {
+    const errorMessage = error?.response?.data?.message || "Blog Not found"; // 🐞 Log any error for debugging
+    dispatch({
+      type: GET_ALL_BLOG_FAILURE,
+      payload: { message: errorMessage },
+    }); // ❌ Dispatch failure action with error
   }
 };
