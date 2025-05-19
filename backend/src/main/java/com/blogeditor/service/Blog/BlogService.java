@@ -17,4 +17,6 @@ public interface BlogService {
 
     public Optional<Blogs> getBlogsById(Long blogId) throws Exception;
 
+    public String deleteBlog (Long userId , Long blogId) throws Exception;
+
 }
