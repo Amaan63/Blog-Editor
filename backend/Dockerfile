@@ -3,13 +3,14 @@ FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
 
-# Copy the project files
-COPY . .
+# Copy only backend folder contents into /app/backend
+COPY backend ./backend
 
-# Give execute permission to mvnw
-RUN chmod +x mvnw
+# Give execute permission to mvnw inside backend folder
+RUN chmod +x backend/mvnw
 
-# Build the project without running tests
+# Change working directory to backend and build without tests
+WORKDIR /app/backend
 RUN ./mvnw clean package -DskipTests
 
 # Use a lightweight image to run the app
@@ -17,8 +18,8 @@ FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-# Copy built jar from the build stage
-COPY --from=build /app/target/*.jar app.jar
+# Copy the jar built in the build stage to /app
+COPY --from=build /app/backend/target/*.jar app.jar
 
 # Run the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
