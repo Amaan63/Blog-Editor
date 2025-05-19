@@ -28,6 +28,34 @@ Blog Editor is a full-stack web application that allows users to write, save dra
 
 ---
 
+## 📸 Output Screenshots
+
+### 🔐 Login Page
+
+![Login](./OutputScreenShots/Login.png)
+
+### 📝 Register Page
+
+![Register](./OutputScreenShots/Register.png)
+
+### 🧾 Blog Form Page
+
+![Blog Form](./OutputScreenShots/BlogForm.png)
+
+### 🖥️ Dashboard Page
+
+![Dashboard](./OutputScreenShots/Dashboard.png)
+
+### ✏️ Edit Blog Page
+
+![Edit Blog](./OutputScreenShots/Editblog.png)
+
+### 🔑 Storing JWT
+
+![Storing JWT](./OutputScreenShots/StoringJWT.png)
+
+---
+
 ## Features
 
 ### Backend
@@ -119,4 +147,3 @@ State management is done using Redux to keep user and blog data consistent acros
 ---
 
 This project serves as both a personal blogging platform and a demonstration of integrating modern frontend and backend technologies in a cohesive manner.
-
