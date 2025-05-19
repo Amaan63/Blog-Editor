@@ -30,12 +30,6 @@ const BlogEditor = () => {
               }
             />
             <Route
-              path="edit"
-              element={
-                <BlogForm formValue={formValue} setFormValue={setFormValue} />
-              }
-            />
-            <Route
               path="preview"
               element={<PreviewContent formValue={formValue} />}
             />
