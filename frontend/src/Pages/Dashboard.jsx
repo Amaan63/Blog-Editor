@@ -5,7 +5,11 @@ import HeaderBar from "../components/Dashboard/HeaderBar";
 import SearchBar from "../components/Dashboard/SearchBar";
 import BlogCard from "../components/Dashboard/BlogCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBlogAction, getBlogByIdAction } from "../Redux/Blog/blog.action";
+import {
+  deleteBlogByIdAction,
+  getAllBlogAction,
+  getBlogByIdAction,
+} from "../Redux/Blog/blog.action";
 import WelcomeBanner from "../components/Dashboard/WelcomeBanner";
 import {
   getUserFromToken,
@@ -52,10 +56,15 @@ const Dashboard = () => {
     }
   }, [searchId, dispatch]);
 
-  // const handleDelete = (id) => {
-  //   // Ideally you should dispatch a delete action and then re-fetch
-  //   toast.success("Blog deleted successfully!");
-  // };
+  const handleDelete = async (id) => {
+    try {
+      dispatch(deleteBlogByIdAction(id));
+      toast.success("Blog deleted successfully!"); // ❌ toast here is outside the async Redux lifecycle
+      dispatch(getAllBlogAction());
+    } catch (error) {
+      toast.error("Failed to delete the blog.");
+    }
+  };
 
   const handleEdit = (blog) => {
     setSelectedBlog(blog);
@@ -66,7 +75,7 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(getAllBlogAction());
     dispatch(getUserFromToken());
-  }, [dispatch, blog]);
+  }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -98,7 +107,12 @@ const Dashboard = () => {
           <div className="columns-1 sm:columns-1 md:columns-2 lg:columns-3 gap-4">
             {filteredBlogs.map((blog) => (
               <div key={blog.id} className="break-inside-avoid mb-4 w-full">
-                <BlogCard blog={blog} currentUser={user} onEdit={handleEdit} />
+                <BlogCard
+                  blog={blog}
+                  currentUser={user}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
               </div>
             ))}
           </div>
