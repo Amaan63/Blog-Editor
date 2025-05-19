@@ -1,9 +1,7 @@
 // pages/BlogEditor.jsx
-import { Routes, Route, Navigate } from "react-router-dom";
 import BlogHeader from "../components/BlogEditor/BlogHeader";
 import TabNavigation from "../components/BlogEditor/TabNavigation";
 import BlogForm from "../components/BlogEditor/BlogForm";
-import PreviewContent from "../components/BlogEditor/PreviewContent";
 import { useState } from "react";
 
 const initialValues = {
