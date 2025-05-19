@@ -1,5 +1,7 @@
+// Define the package
 package com.blogeditor.controller;
 
+// Import necessary classes
 import com.blogeditor.config.JwtProvider;
 import com.blogeditor.dto.AuthResponse;
 import com.blogeditor.dto.UserDto;
@@ -13,59 +15,82 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+// Marks this class as a REST controller
 @RestController
+// Base URL mapping for all user-related endpoints
 @RequestMapping("/user")
 public class UserController {
 
+    // Injecting UserServiceImplementation to handle user logic
     @Autowired
     private UserServiceImplementation userServiceImplementation;
 
+    // Endpoint for user registration (sign-up)
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> signUpUser(@RequestBody UserDto userDto){
-        try{
-            // Check if the email already exists using the service method
+    public ResponseEntity<AuthResponse> signUpUser(@RequestBody UserDto userDto) {
+        try {
+            // Check if the email is already registered
             userServiceImplementation.checkIfUserExistsByEmail(userDto.getEmail());
 
-            // If email doesn't exist, proceed to register the new user
+            // Register new user
             User savedUser = userServiceImplementation.registerUser(userDto);
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(),savedUser.getPassword());
+            // Create authentication object for JWT generation
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    savedUser.getEmail(),
+                    savedUser.getPassword()
+            );
 
+            // Generate JWT token for the newly registered user
             String token = JwtProvider.generatedToken(authentication);
 
-            AuthResponse res = new AuthResponse(token,"Registeration Success");
+            // Create response containing the token and success message
+            AuthResponse res = new AuthResponse(token, "Registeration Success");
 
-            return new ResponseEntity<>(res, HttpStatus.OK); // return AuthResponse, not savedUser
+            // Return response with HTTP status 200 (OK)
+            return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
-            // Return a bad request response with the exception message if an error occurs
+            // If registration fails, return conflict status with error message
             return new ResponseEntity<>(new AuthResponse(null, e.getMessage()), HttpStatus.CONFLICT);
         }
     }
 
+    // Endpoint for user login (sign-in)
     @PostMapping("/signin")
     public ResponseEntity<AuthResponse> signInUser(@RequestBody UserDto userDto) throws Exception {
         try {
-            Authentication authentication = userServiceImplementation.authenticate(userDto.getEmail(), userDto.getPassword());
+            // Authenticate user using email and password
+            Authentication authentication = userServiceImplementation.authenticate(
+                    userDto.getEmail(),
+                    userDto.getPassword()
+            );
+
+            // Generate JWT token on successful authentication
             String token = JwtProvider.generatedToken(authentication);
 
+            // Create response with token and success message
             AuthResponse res = new AuthResponse(token, "Login Success");
+
+            // Return response with HTTP status 200 (OK)
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
-            // If email not found or password mismatch
+            // If login fails, return unauthorized status with error message
             return new ResponseEntity<>(new AuthResponse(null, e.getMessage()), HttpStatus.UNAUTHORIZED);
-
         }
     }
 
+    // Endpoint to retrieve user details from JWT token
     @GetMapping("/token-to-user")
     public ResponseEntity<?> tokenToUser(@RequestHeader("Authorization") String jwt) throws Exception {
         try {
+            // Extract user details from JWT token
             User user = userServiceImplementation.findUserByJwt(jwt);
+
+            // Return user object with HTTP status 200 (OK)
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (BadCredentialsException e) {
-            // If email not found or password mismatch
+            // If token is invalid or user not found, return unauthorized status
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-
         }
     }
 }

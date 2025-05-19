@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthResponse {
 
+    /**
+     * To pass Generated JWT token
+     * Pass a message with the token
+     */
+
     private String token;
 
     private String message;
