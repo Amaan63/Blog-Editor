@@ -16,9 +16,13 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { blogs = [], loading } = useSelector((state) => state.blog);
+  const {
+    blogs = [],
+    loading,
+    blog,
+    error,
+  } = useSelector((state) => state.blog);
   const user = useSelector((state) => state.auth.user);
-  const { error } = useSelector((state) => state.blog);
 
   const [searchId, setSearchId] = useState("");
 
@@ -50,15 +54,15 @@ const Dashboard = () => {
   //   toast.success("Blog deleted successfully!");
   // };
 
-  // const handleEdit = (blog) => {
-  //   navigate("/editor");
-  // };
+  const handleEdit = (blog) => {
+    navigate("/editor");
+  };
 
   // to get All the blogs
   useEffect(() => {
     dispatch(getAllBlogAction());
     dispatch(getUserFromToken());
-  }, [dispatch]);
+  }, [dispatch, blog]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -90,7 +94,7 @@ const Dashboard = () => {
               <BlogCard
                 key={blog.id}
                 blog={blog}
-                // onEdit={handleEdit}
+                onEdit={handleEdit}
                 // onDelete={handleDelete}
               />
             ))}
