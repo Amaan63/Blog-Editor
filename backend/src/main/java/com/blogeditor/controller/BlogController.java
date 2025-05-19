@@ -56,5 +56,19 @@ public class BlogController {
     public ResponseEntity<Optional<Blogs>> getBlogById(@PathVariable Long id) throws Exception {
         return ResponseEntity.ok(blogServiceImplementation.getBlogsById(id));
     }
+
+    @DeleteMapping("/delete/blogId/{blogId}")
+    public ResponseEntity<String> deleteBlog(
+            @PathVariable Long blogId,
+            @RequestHeader("Authorization") String jwt) {
+        try {
+            User user = userServiceImplementation.findUserByJwt(jwt);
+            String response = blogServiceImplementation.deleteBlog(user.getId(), blogId);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }
 
