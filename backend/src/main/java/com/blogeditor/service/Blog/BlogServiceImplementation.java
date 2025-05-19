@@ -102,4 +102,27 @@ public class BlogServiceImplementation implements BlogService {
         return blogs;
     }
 
+    @Override
+    public String deleteBlog(Long userId, Long blogId) throws Exception {
+        // Fetch the blog by blogId
+        Optional<Blogs> optionalBlog = blogRepository.findById(blogId);
+
+        if (!optionalBlog.isPresent()) {
+            throw new Exception("Blog not found with ID: " + blogId);
+        }
+
+        Blogs blog = optionalBlog.get();
+
+        // Check if the blog belongs to the user
+        if (!blog.getUser().getId().equals(userId)) {
+            throw new Exception("You are not authorized to delete this blog.");
+        }
+
+        // Proceed to delete
+        blogRepository.deleteById(blogId);
+
+        return "Blog deleted successfully.";
+    }
+
+
 }
