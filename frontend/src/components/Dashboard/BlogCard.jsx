@@ -1,6 +1,11 @@
 import { Edit, Trash2 } from "lucide-react";
 
 const BlogCard = ({ blog, onEdit, onDelete }) => {
+  const createdDate = new Date(blog.createdAt);
+  const updatedDate = new Date(blog.updatedAt);
+
+  const createdTime = Math.floor(createdDate.getTime() / 1000); // seconds
+  const updatedTime = Math.floor(updatedDate.getTime() / 1000); // seconds
   return (
     <div className="overflow-hidden bg-white rounded-lg shadow">
       <div className="p-5">
@@ -46,7 +51,11 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
         <p className="text-gray-600">{blog.content}</p>
 
         <div className="flex items-center justify-between mt-4">
-          <span className="text-sm text-gray-500">{blog.createdAt}</span>
+          <span className="text-sm text-gray-500">
+            {createdTime === updatedTime
+              ? `Created: ${createdDate.toLocaleString()}`
+              : `Updated: ${updatedDate.toLocaleString()}`}
+          </span>
           <div className="flex space-x-2">
             <button
               //sends this blog to parent so that we can identify which blog is clicked and get it detail
