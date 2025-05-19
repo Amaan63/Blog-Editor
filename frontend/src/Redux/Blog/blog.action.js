@@ -22,10 +22,15 @@ export const createOrUpdateBlogAction = (blogData) => async (dispatch) => {
       blogData
     );
     dispatch({ type: SAVE_OR_UPDATE_DRAFT_BLOG_SUCCESS, payload: data });
-    console.log("Draft Blog ", data);
+    return data;
   } catch (error) {
-    console.log("error ", error);
-    dispatch({ type: SAVE_OR_UPDATE_DRAFT_BLOG_FAILURE, payload: error });
+    const errorMessage = error?.response?.data || "Blog Not found";
+    dispatch({
+      type: SAVE_OR_UPDATE_DRAFT_BLOG_FAILURE,
+      payload: { message: errorMessage },
+    });
+
+    throw errorMessage; // Only component handles toast
   }
 };
 
