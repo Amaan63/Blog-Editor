@@ -18,6 +18,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
+  const user = useSelector((state) => state.auth.user);
 
   const {
     blogs = [],
@@ -25,7 +26,6 @@ const Dashboard = () => {
     blog,
     error,
   } = useSelector((state) => state.blog);
-  const user = useSelector((state) => state.auth.user);
 
   const [searchId, setSearchId] = useState("");
 
@@ -98,7 +98,7 @@ const Dashboard = () => {
           <div className="columns-1 sm:columns-1 md:columns-2 lg:columns-3 gap-4">
             {filteredBlogs.map((blog) => (
               <div key={blog.id} className="break-inside-avoid mb-4 w-full">
-                <BlogCard blog={blog} onEdit={handleEdit} />
+                <BlogCard blog={blog} currentUser={user} onEdit={handleEdit} />
               </div>
             ))}
           </div>
