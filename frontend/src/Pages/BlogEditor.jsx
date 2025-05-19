@@ -21,19 +21,7 @@ const BlogEditor = () => {
       <main className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="bg-white rounded-lg shadow p-6">
           <TabNavigation />
-
-          <Routes>
-            <Route
-              path=""
-              element={
-                <BlogForm formValue={formValue} setFormValue={setFormValue} />
-              }
-            />
-            <Route
-              path="preview"
-              element={<PreviewContent formValue={formValue} />}
-            />
-          </Routes>
+          <BlogForm formValue={formValue} setFormValue={setFormValue} />
         </div>
       </main>
     </div>
