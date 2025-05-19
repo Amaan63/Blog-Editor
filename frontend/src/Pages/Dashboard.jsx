@@ -11,10 +11,13 @@ import {
   getUserFromToken,
   logoutUser,
 } from "../Redux/Authentication/authentication.action";
+import BlogUpdateModal from "../components/BlogEditor/BlogUpdateModal";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState(null);
 
   const {
     blogs = [],
@@ -55,7 +58,8 @@ const Dashboard = () => {
   // };
 
   const handleEdit = (blog) => {
-    navigate("/editor");
+    setSelectedBlog(blog);
+    setShowModal(true);
   };
 
   // to get All the blogs
@@ -106,6 +110,12 @@ const Dashboard = () => {
           </div>
         )}
       </main>
+      {showModal && selectedBlog && (
+        <BlogUpdateModal
+          selectedBlog={selectedBlog}
+          setShowModal={setShowModal}
+        />
+      )}
     </div>
   );
 };
