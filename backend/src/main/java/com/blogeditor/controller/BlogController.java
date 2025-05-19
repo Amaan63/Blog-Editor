@@ -31,7 +31,7 @@ public class BlogController {
             return ResponseEntity.ok(blog);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Failed to create blog: " + e.getMessage());
+                    .body("Failed to create or update blog: " + e.getMessage());
         }
     }
 
