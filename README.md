@@ -86,10 +86,6 @@ State management is done using Redux to keep user and blog data consistent acros
 
 ---
 
-## Project Overview and Features
-
-The **Blog Editor** is a full-stack web application designed to provide users with a seamless platform to create, draft, edit, and publish blogs. Built with modern technologies on both the frontend and backend, it ensures a responsive and user-friendly experience.
-
 ### Key Features
 
 - **User Registration and Authentication**  
