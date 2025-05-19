@@ -7,7 +7,7 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
   const createdTime = Math.floor(createdDate.getTime() / 1000); // seconds
   const updatedTime = Math.floor(updatedDate.getTime() / 1000); // seconds
   return (
-    <div className="overflow-hidden bg-white rounded-lg shadow">
+    <div className="w-full overflow-hidden bg-white rounded-lg shadow">
       <div className="p-5">
         <div className="flex items-center justify-between mb-2">
           <span

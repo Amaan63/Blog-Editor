@@ -81,8 +81,9 @@ const Dashboard = () => {
         onLogout={handleLogout}
       />
 
-      <main className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <main className="px-4 py-6 mx-auto max-w-7xl">
         <WelcomeBanner user={user} />
+
         <div className="mb-6">
           <SearchBar
             value={searchId}
@@ -90,26 +91,26 @@ const Dashboard = () => {
             onSearch={handleSearch}
           />
         </div>
+
         {loading ? (
           <p className="text-center">Loading...</p>
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 items-start">
+          <div className="columns-1 sm:columns-1 md:columns-2 lg:columns-3 gap-4">
             {filteredBlogs.map((blog) => (
-              <BlogCard
-                key={blog.id}
-                blog={blog}
-                onEdit={handleEdit}
-                // onDelete={handleDelete}
-              />
+              <div key={blog.id} className="break-inside-avoid mb-4 w-full">
+                <BlogCard blog={blog} onEdit={handleEdit} />
+              </div>
             ))}
           </div>
         )}
+
         {!loading && filteredBlogs.length === 0 && (
           <div className="p-8 text-center">
             <p className="text-lg text-gray-600">No blogs found</p>
           </div>
         )}
       </main>
+
       {showModal && selectedBlog && (
         <BlogUpdateModal
           selectedBlog={selectedBlog}
