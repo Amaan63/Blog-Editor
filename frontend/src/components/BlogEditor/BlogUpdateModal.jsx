@@ -1,4 +1,3 @@
-import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -21,15 +20,13 @@ const BlogUpdateModal = ({ selectedBlog, setShowModal }) => {
   });
 
   const handleSubmit = (values) => {
-    // Ideally dispatch update action here
     dispatch(createOrUpdateBlogAction(values))
-      .then((res) => {
+      .then(() => {
         toast.success("Blog updated successfully!");
         setShowModal(false);
       })
       .catch((err) => {
-        console.error(err);
-        toast.error("Failed to update blog. Please try again.");
+        toast.error("Error ", err);
       });
   };
 
