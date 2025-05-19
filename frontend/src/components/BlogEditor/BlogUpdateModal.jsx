@@ -2,7 +2,10 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { createOrUpdateBlogAction } from "../../Redux/Blog/blog.action";
+import {
+  createOrUpdateBlogAction,
+  getAllBlogAction,
+} from "../../Redux/Blog/blog.action";
 
 const BlogUpdateModal = ({ selectedBlog, setShowModal }) => {
   const dispatch = useDispatch();
@@ -24,6 +27,7 @@ const BlogUpdateModal = ({ selectedBlog, setShowModal }) => {
       .then(() => {
         toast.success("Blog updated successfully!");
         setShowModal(false);
+        dispatch(getAllBlogAction());
       })
       .catch((err) => {
         toast.error("Error ", err);
