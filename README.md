@@ -86,12 +86,41 @@ State management is done using Redux to keep user and blog data consistent acros
 
 ---
 
-## Installation
+## Project Overview and Features
 
-### Backend
+The **Blog Editor** is a full-stack web application designed to provide users with a seamless platform to create, draft, edit, and publish blogs. Built with modern technologies on both the frontend and backend, it ensures a responsive and user-friendly experience.
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/blog-editor.git
-   cd blog-editor/backend
-   ```
+### Key Features
+
+- **User Registration and Authentication**  
+  Secure user signup and login powered by JWT authentication, ensuring safe and authorized access to blogging functionalities.
+
+- **Blog Drafting and Publishing**  
+  Users can save blog drafts, update existing drafts, and publish blogs with ease.
+
+- **Role-Based Access Control**  
+  Only the blog owner can edit or delete their blogs, ensuring data security and integrity.
+
+- **Rich Blog Content Management**  
+  Support for rich text content, tagging, and content validation to help organize blogs effectively.
+
+- **Responsive Frontend UI**  
+  Built with React, Redux, Tailwind CSS, and DaisyUI for a sleek, modern, and mobile-friendly user interface.
+
+- **Form Management and Validation**  
+  Uses Formik and Yup for robust form handling and validation, improving user experience and data quality.
+
+- **Real-Time Notifications**  
+  Toastify integration provides instant feedback and alerts to users on actions like save, publish, or error messages.
+
+### Technical Highlights
+
+- **Backend:** Spring Boot with REST APIs, JWT-based security, and database persistence using JPA and MySQL.
+- **Frontend:** React with Redux for state management, Formik/Yup for forms, Tailwind CSS and DaisyUI for styling.
+- **Security:** JWT tokens for secure authentication and authorization.
+- **Development Tools:** Lombok to reduce boilerplate code on the backend, improving code clarity and efficiency.
+
+---
+
+This project serves as both a personal blogging platform and a demonstration of integrating modern frontend and backend technologies in a cohesive manner.
+
