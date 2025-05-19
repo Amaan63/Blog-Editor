@@ -1,4 +1,7 @@
 import {
+  DELETE_BLOG_BY_ID_FAILURE,
+  DELETE_BLOG_BY_ID_REQUEST,
+  DELETE_BLOG_BY_ID_SUCCESS,
   GET_ALL_BLOG_FAILURE,
   GET_ALL_BLOG_REQUEST,
   GET_ALL_BLOG_SUCCESS,
@@ -26,6 +29,7 @@ const blogReducer = (state = initialState, action) => {
     case PUBLISH_BLOG_REQUEST:
     case GET_ALL_BLOG_REQUEST:
     case GET_BLOG_BY_ID_REQUEST:
+    case DELETE_BLOG_BY_ID_REQUEST:
       return {
         ...state,
         loading: true,
@@ -46,10 +50,18 @@ const blogReducer = (state = initialState, action) => {
     case GET_BLOG_BY_ID_SUCCESS:
       return { ...state, loading: false, blogs: [action.payload] }; // override blogs with searched one
 
+    case DELETE_BLOG_BY_ID_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        blogs: state.blogs.filter((blog) => blog.id !== action.payload), // assuming payload is the deleted blogId
+      };
+
     case SAVE_OR_UPDATE_DRAFT_BLOG_FAILURE:
     case PUBLISH_BLOG_FAILURE:
     case GET_ALL_BLOG_FAILURE:
     case GET_BLOG_BY_ID_FAILURE:
+    case DELETE_BLOG_BY_ID_FAILURE:
       return {
         ...state,
         loading: false,
