@@ -16,14 +16,35 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
           >
             {blog.status || "Unknown"}
           </span>
-
           <span className="text-xs text-gray-500">ID: {blog.id}</span>
         </div>
-        <h3 className="mb-2 text-lg font-bold text-gray-900">{blog.title}</h3>
-        <p className="mb-2 text-sm text-gray-500">
+
+        <h3 className="mb-1 text-lg font-bold text-gray-900">{blog.title}</h3>
+
+        {/* Author */}
+        <p className="mb-1 text-sm text-gray-500">
           By: {blog.user?.username || "Unknown Author"}
         </p>
-        <p className="text-gray-600 line-clamp-2">{blog.content}</p>
+
+        {/* Tags Display */}
+        {blog.tags && (
+          <div className="flex flex-wrap gap-2 mb-2">
+            {blog.tags.split(/\s+/).map((tag, index) =>
+              tag ? (
+                <span
+                  key={index}
+                  className="inline-block text-xs font-medium px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full"
+                >
+                  {tag}
+                </span>
+              ) : null
+            )}
+          </div>
+        )}
+
+        {/* Content - dynamic height */}
+        <p className="text-gray-600">{blog.content}</p>
+
         <div className="flex items-center justify-between mt-4">
           <span className="text-sm text-gray-500">{blog.createdAt}</span>
           <div className="flex space-x-2">
