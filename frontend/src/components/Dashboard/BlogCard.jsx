@@ -1,8 +1,10 @@
 import { Edit, Trash2 } from "lucide-react";
 
-const BlogCard = ({ blog, onEdit, onDelete }) => {
+const BlogCard = ({ blog, currentUser, onEdit, onDelete }) => {
   const createdDate = new Date(blog.createdAt);
   const updatedDate = new Date(blog.updatedAt);
+
+  const isOwner = currentUser?.username === blog.user?.username; // or compare IDs if available
 
   const createdTime = Math.floor(createdDate.getTime() / 1000); // seconds
   const updatedTime = Math.floor(updatedDate.getTime() / 1000); // seconds
@@ -57,19 +59,22 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
               : `Updated: ${updatedDate.toLocaleString()}`}
           </span>
           <div className="flex space-x-2">
-            <button
-              //sends this blog to parent so that we can identify which blog is clicked and get it detail
-              onClick={() => onEdit(blog)}
-              className="p-2 text-blue-600 bg-blue-100 rounded-md hover:bg-blue-200"
-            >
-              <Edit size={16} />
-            </button>
-            <button
-              onClick={() => onDelete(blog.id)}
-              className="p-2 text-red-600 bg-red-100 rounded-md hover:bg-red-200"
-            >
-              <Trash2 size={16} />
-            </button>
+            {isOwner && (
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => onEdit(blog)}
+                  className="p-2 text-blue-600 bg-blue-100 rounded-md hover:bg-blue-200"
+                >
+                  <Edit size={16} />
+                </button>
+                <button
+                  onClick={() => onDelete(blog.id)}
+                  className="p-2 text-red-600 bg-red-100 rounded-md hover:bg-red-200"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
