@@ -9,9 +9,9 @@ COPY backend ./backend
 # Give execute permission to mvnw inside backend folder
 RUN chmod +x backend/mvnw
 
-# Change working directory to backend and build without tests
+# Change working directory to backend and build without tests, with debug logs enabled
 WORKDIR /app/backend
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw clean package -DskipTests -X
 
 # Use a lightweight image to run the app
 FROM eclipse-temurin:21-jre
