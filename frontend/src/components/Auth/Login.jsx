@@ -99,7 +99,6 @@ const Login = () => {
           disabled={submitted}
           className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
         >
-          {/* {submitted ? "Processing..." : "Sign In"} */}
           Sign In
         </button>
       </Form>
