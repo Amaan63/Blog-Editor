@@ -27,10 +27,14 @@ public class BlogServiceImplementation implements BlogService {
         Blogs blog;
 
         if (reqBlog.getBlogId() != null) {
-            System.out.println("Blog ID: " + reqBlog.getBlogId());
             // Try to fetch and update existing blog
             blog = blogRepository.findById(reqBlog.getBlogId())
                     .orElseThrow(() -> new Exception("Blog not found with id: " + reqBlog.getBlogId()));
+
+            // Check if the logged-in user is the owner of the blog
+            if (!blog.getUser().getEmail().equals(user.getEmail())) {
+                throw new Exception("You cannot edit another user's blog");
+            }
         } else {
             // Create new blog
             blog = new Blogs();
@@ -50,6 +54,7 @@ public class BlogServiceImplementation implements BlogService {
 
         return blogRepository.save(blog);
     }
+
 
 
 
@@ -96,4 +101,5 @@ public class BlogServiceImplementation implements BlogService {
         }
         return blogs;
     }
+
 }
