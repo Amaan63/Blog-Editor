@@ -49,6 +49,7 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
           <span className="text-sm text-gray-500">{blog.createdAt}</span>
           <div className="flex space-x-2">
             <button
+              //sends this blog to parent so that we can identify which blog is clicked and get it detail
               onClick={() => onEdit(blog)}
               className="p-2 text-blue-600 bg-blue-100 rounded-md hover:bg-blue-200"
             >
