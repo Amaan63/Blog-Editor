@@ -1,16 +1,24 @@
-# Use an official Maven image to build the app
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Use JDK 21 for building the app
+FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
+
+# Copy the project files
 COPY . .
+
+# Give execute permission to mvnw
+RUN chmod +x mvnw
+
+# Build the project without running tests
 RUN ./mvnw clean package -DskipTests
 
-# Use a smaller JDK image to run the app
-FROM eclipse-temurin:17-jdk
+# Use a lightweight image to run the app
+FROM eclipse-temurin:21-jre
+
 WORKDIR /app
 
-# Copy the jar from the previous image
+# Copy built jar from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
-EXPOSE 8080
+# Run the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
